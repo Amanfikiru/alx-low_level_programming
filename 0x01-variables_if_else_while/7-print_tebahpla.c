@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 /**
- * main - print lowwercase letters in reverse order
+ * main - print lowwercase letters in reverse order.
  *
- * return 0 for sucess
+ * Return: 0 on success
  * **/
 int main(void)
 {
