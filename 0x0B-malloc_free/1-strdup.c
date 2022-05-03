@@ -31,5 +31,3 @@ char *_strdup(char *str)
 	}
 	return (strDup);
 }
-© 2022 GitHub, Inc.
-Terms
