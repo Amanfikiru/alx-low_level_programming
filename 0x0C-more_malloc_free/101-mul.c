@@ -3,101 +3,66 @@
 #include "main.h"
 
 /**
- * is_digit - checks if a string contains a non-digit char
- * @s: string to be evaluated
+ * _puts - prints a string to the standard output
+ * @str: a string
  *
- * Return: 0 if a non-digit is found, 1 otherwise
+ * Return: 0
  */
-int is_digit(char *s)
-{
-int i = 0;
 
-while (s[i])
+int _puts(const char *str)
 {
-if (s[i] < '0' || s[i] > '9')
-return (0);
-i++;
-}
+while (*str)
+_putchar(*str++);
 return (1);
 }
 
 /**
- * _strlen - returns the length of a string
- * @s: string to evaluate
+ * main - prints the product of it's 2 arguments
+ * @argc: argument count
+ * @argv: arguments
  *
- * Return: the length of the string
+ * Return: 0 or 98
  */
-int _strlen(char *s)
+
+int main(int argc, char **argv)
 {
-int i = 0;
+int len_1 = 0, len_2 = 0, len_r = 0, i, j, len_r_tmp, carry = 0, len_tmp;
+char *s1, *s2, *s_tmp, *res, c1, c2, dig_1, dig_2, temp_res, t2 = 0, sig0 = 0;
 
-while (s[i] != '\0')
-{
-i++;
-}
-return (i);
-}
-
-/**
- * errors - handles errors for main
- */
-void errors(void)
-{
-printf("Error\n");
-exit(98);
-}
-
-/**
- * main - multiplies two positive numbers
- * @argc: number of arguments
- * @argv: array of arguments
- *
- * Return: always 0 (Success)
- */
-int main(int argc, char *argv[])
-
-{
-char *s1, *s2;
-
-int len1, len2, len, i, carry, digit1, digit2, *result, a = 0;
-
+if (argc != 3)
+return (!!_puts("Error\n") * 98);
 s1 = argv[1], s2 = argv[2];
-if (argc != 3 || !is_digit(s1) || !is_digit(s2))
-errors();
-len1 = _strlen(s1);
-len2 = _strlen(s2);
-len = len1 + len2 + 1;
-result = malloc(sizeof(int) * len);
-if (!result)
-return (1);
-for (i = 0; i <= len1 + len2; i++)
-result[i] = 0;
-for (len1 = len1 - 1; len1 >= 0; len1--)
+for (; c1 = s1[len_1], c2 = s2[len_2], c1 || c2; len_1 += !!c1, len_2 += !!c2)
 {
-digit1 = s1[len1] - '0';
-carry = 0;
-for (len2 = _strlen(s2) - 1; len2 >= 0; len2--)
+c1 = s1[len_1], c2 = s2[len_2];
+if ((c1 && (c1 < '0' || c1 > '9')) || ((c2 && (c2 < '0' || c2 > '9'))))
+return (_puts("Error\n"), 98);
+}
+carry = 0, len_r = len_1 + len_2 + 1;
+res = malloc(sizeof(char) * len_r--);
+if (res == NULL)
+return (_puts("Error\n"), 98);
+len_r_tmp = len_r;
+while (len_r_tmp > 0)
+res[len_r_tmp--] = 0;
+len_tmp = len_1, s_tmp = s1;
+if (len_2 > len_1)
+s1 = s2, s2 = s_tmp, len_1 = len_2, len_2 = len_tmp;
+for (i = len_2 - 1; i >= 0; i--)
 {
-digit2 = s2[len2] - '0';
-carry += result[len1 + len2 + 1] + (digit1 *digit2);
-result[len1 + len2 + 1] = carry % 10;
-carry /= 10;
-}
-if (carry > 0)
-
-result[len1 + len2 + 1] += carry;
-}
-for (i = 0; i < len - 1; i++)
+for (j = len_1 - 1; j >= 0; j--)
 {
-if (result[i])
-a = 1;
-if (a)
-
-_putchar(result[i] + '0');
+dig_1 = s1[j] - '0', dig_2 = s2[i] - '0';
+temp_res = dig_1 * (dig_2) + carry;
+t2 = (temp_res + res[i + j + 1]);
+res[i + j + 1] = (t2 % 10), carry = t2 / 10;
 }
-if (!a)
-_putchar('0');
+res[i] += carry, carry = 0;
+}
+for (i = 0, sig0 = 0; i < len_r; i++, sig0 = sig0 || !!res[i])
+if (res[i] || sig0 || i == len_r - 1)
+_putchar(res[i] + '0');
 _putchar('\n');
-free(result);
+free(res);
 return (0);
 }
