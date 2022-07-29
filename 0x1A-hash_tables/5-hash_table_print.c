@@ -1,31 +1,53 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_print - this prints a hash table
+ * print_list - prints all the elements of a linked list
+ * @h: pointer to the hash_node_t list to print
+ */
+void print_list(hash_node_t *h)
+{
+	while (h)
+	{
+		printf("'%s': '%s'", h->key, h->value);
+		if (h->next)
+			printf(", ");
+		h = h->next;
+	}
+}
+
+/**
+ * hash_table_print - prints a hash table
  * @ht: hash table to print
- *
- * Return: void
  */
 void hash_table_print(const hash_table_t *ht)
 {
 	unsigned long int i;
-	hash_node_t *tmp;
-	char flag = 0; /* 0 while no data is yet to be printed */
+	hash_node_t *node = NULL;
+	char *last_key = NULL;
+	unsigned long int index;
 
-	if (ht == NULL || ht->array == NULL)
+	if (!ht)
 		return;
-	printf("{");
+
 	for (i = 0; i < ht->size; i++)
 	{
-		tmp = ht->array[i];
-		while (tmp != NULL)
+		if (ht->array[i] != NULL)
+			node = ht->array[i];
+	}
+
+	printf("{");
+
+	if (node)
+	{
+		last_key = node->key;
+		index = key_index((const unsigned char *)last_key, ht->size);
+		for (i = 0; i < ht->size; i++)
 		{
-			if (flag == 1)
+			print_list(ht->array[i]);
+			if (ht->array[i] && i < index)
 				printf(", ");
-			printf("'%s': '%s'", tmp->key, tmp->value);
-			flag = 1;
-			tmp = tmp->next;
 		}
 	}
+
 	printf("}\n");
 }
